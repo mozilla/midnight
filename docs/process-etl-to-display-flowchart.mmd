@@ -1,0 +1,19 @@
+flowchart TB
+	  start --> step1[query redash for successfully completed tasks for android/linux/win that have pageload results for firefox/chrome on specific URLS]
+	  step1 --> step2[export these queries on redash as JSON with API key daily]
+	  step2 --> step3["slurp in exported json and find revision with results for both chrome and firefox on platform, find task_ids (get-treeherder-completed-pageload-jobs.sh)"]
+	  step3 --> step4["use task_id to get artifacts (get-treeherder-task-artifact.sh)"]
+	  step4 --> step5["save artifacts (browsertime-results-original.tgz) to tmp"]
+	  step5 --> step6a["extract metrics from browsertime json (generate-browsertime-metrics.sh)"]
+	  subgraph extract
+	  step6a --> step6b["find test iteration that most closely matches median results, use it to select video and data files"]
+	  end
+	  step6b --> step7a["make side-by-side video (generate-video-side-by-side-wrapper.sh)"]
+	  subgraph transform
+	  step7a --> step7b["make filmstrip (generate_video_thumbnails_standalone.py)"]
+	  step7b --> step7c["make aggregate json with all details (generate-aggregate-json.sh)"]
+	  end
+	  step7c --> step8["checkin transformed objects into github"]
+	  step8 --> step9["use aggregate json and chartjs to make github pages"]
+	  step9 --> step10["complete for other URLS in test set like wikipedia, cnn, instagram"]
+	  step10 --> step11["finish"]

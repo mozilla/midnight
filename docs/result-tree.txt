@@ -1,0 +1,50 @@
+.
+├── android-14-aarch64-a55
+│   ├── 2024-10-14-at-02-54
+│   │   ├── chrome
+│   │   │   ├── amazon
+│   │   │   │   ├── browsertime-videos-annotated.tgz
+│   │   │   │   └── perfherder-data.json
+│   │   │   ├── cnn
+│   │   │   │   ├── browsertime-videos-annotated.tgz
+│   │   │   │   └── perfherder-data.json
+│   │   │   ├── instagram
+│   │   │   │   ├── browsertime-videos-annotated.tgz
+│   │   │   │   └── perfherder-data.json
+│   │   │   └── wikipedia
+│   │   │       ├── browsertime-videos-annotated.tgz
+│   │   │       └── perfherder-data.json
+│   │   └── firefox
+│   │       ├── amazon
+│   │       │   ├── browsertime-videos-annotated.tgz
+│   │       │   └── perfherder-data.json
+│   │       ├── cnn
+│   │       │   ├── browsertime-videos-annotated.tgz
+│   │       │   └── perfherder-data.json
+│   │       ├── instagram
+│   │       │   ├── browsertime-videos-annotated.tgz
+│   │       │   └── perfherder-data.json
+│   │       └── wikipedia
+│   │           ├── browsertime-videos-annotated.tgz
+│   │           └── perfherder-data.json
+│   └── 2024-10-23-at-02-36
+│       └── chrome
+│           ├── amazon
+│           │   ├── browsertime-videos-annotated.tgz
+│           │   └── perfherder-data.json
+│           ├── cnn
+│           │   ├── browsertime-videos-annotated.tgz
+│           │   └── perfherder-data.json
+│           ├── instagram
+│           │   ├── browsertime-videos-annotated.tgz
+│           │   └── perfherder-data.json
+│           └── wikipedia
+│               ├── browsertime-videos-annotated.tgz
+│               └── perfherder-data.json
+├── linux-18.04-x64
+│ 
+├── os-x-10.15
+│   
+└── windows-11-x64
+    
+       
