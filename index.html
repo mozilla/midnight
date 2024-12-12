@@ -319,8 +319,9 @@ tr:hover {
 	    const end = visualProgress[i + 1];
 	    if (timestamp >= start.timestamp && timestamp <= end.timestamp) {
 	      // Linear interpolation formula
-	      const fraction = (timestamp - start.timestamp) / (end.timestamp - start.timestamp);
-	      return start.percent + fraction * (end.percent - start.percent);
+	      //const fraction = (timestamp - start.timestamp) / (end.timestamp - start.timestamp);
+	      //return start.percent + fraction * (end.percent - start.percent);
+	      return start.percent;
 	    }
 	  }
 	  return timestamp < visualProgress[0].timestamp ? visualProgress[0].percent : visualProgress[visualProgress.length - 1].percent;
@@ -413,21 +414,21 @@ tr:hover {
       const metricData = filteredData[0];
 
       const chromeData = {
-	  "FirstContentfulPaint":  metricData.chrome.metrics.fcp,
-	  "LargestContentfulPaint":  metricData.chrome.metrics.largestContentfulPaintrenderTime,
-	  "SpeedIndex": metricData.chrome.metrics.SpeedIndex,
-	  "VisualComplete85": metricData.chrome.metrics.VisualComplete85,
-	  "domComplete": metricData.chrome.metrics.domComplete,
-	  "loadEventEnd": metricData.chrome.metrics.loadEventEnd
+	  "FirstContentfulPaint":  metricData.chrome.metrics.fcp.median,
+	  "LargestContentfulPaint":  metricData.chrome.metrics.largestContentfulPaintrenderTime.median,
+	  "SpeedIndex": metricData.chrome.metrics.SpeedIndex.median,
+	  "VisualComplete85": metricData.chrome.metrics.VisualComplete85.median,
+	  "domComplete": metricData.chrome.metrics.domComplete.median,
+	  "loadEventEnd": metricData.chrome.metrics.loadEventEnd.median
       };
 
       const firefoxData = {
-	  "FirstContentfulPaint":  metricData.firefox.metrics.fcp,
-	  "LargestContentfulPaint":  metricData.firefox.metrics.largestContentfulPaintrenderTime,
-	  "SpeedIndex": metricData.firefox.metrics.SpeedIndex,
-	  "VisualComplete85": metricData.firefox.metrics.VisualComplete85,
-	  "domComplete": metricData.firefox.metrics.domComplete,
-	  "loadEventEnd": metricData.firefox.metrics.loadEventEnd
+	  "FirstContentfulPaint":  metricData.firefox.metrics.fcp.median,
+	  "LargestContentfulPaint":  metricData.firefox.metrics.largestContentfulPaintrenderTime.median,
+	  "SpeedIndex": metricData.firefox.metrics.SpeedIndex.median,
+	  "VisualComplete85": metricData.firefox.metrics.VisualComplete85.median,
+	  "domComplete": metricData.firefox.metrics.domComplete.median,
+	  "loadEventEnd": metricData.firefox.metrics.loadEventEnd.median
       };
 
       const tableElement = document.getElementById(`${metric}-table`);

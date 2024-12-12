@@ -4,7 +4,12 @@ XURLMIN=$MOZPERFAX/bin/moz-perf-x-transform-url.exe
 XAGGREGATE=../../scripts/generate_aggregate_json_by_date.py
 CHROMEDIR=chrome_release
 FIREFOXDIR=fenix_nightly
+
 ODIR=tmp
+if [ ! -d tmp ]; then
+    mkdir $ODIR
+fi
+
 
 get_aggregate() {
     TESTN="$1"
@@ -42,28 +47,37 @@ generate_platform_by_sitelist() {
        echo "$URLM"
 
        FFMJ="${FIREFOXDIR}/${URLM}-metrics.json"
-       FFFJ="${ARTIFACT_BASE}-firefox-filmstrip.json"
+       FFFJ="${ODIR}/${ARTIFACT_BASE}-firefox-filmstrip.json"
 
        CMJ="${CHROMEDIR}/${URLM}-metrics.json"
-       CFJ="${ARTIFACT_BASE}-chrome-filmstrip.json"
+       CFJ="${ODIR}/${ARTIFACT_BASE}-chrome-filmstrip.json"
 
        $XAGGREGATE "$URLM" "$PLATFORM" "$ISODATE" "${ARTIFACT_BASE}-side-by-side.mp4" "$FFFJ" "$FFMJ" "$CFJ" "$CMJ"
    done
 }
 
-#generate_platform_by_sitelist "android" "../sitelist.txt" "2024-11-10"
+generate_platform_by_sitelist "android" "../sitelist.txt" "2024-11-10"
 
 # 3
 generate_data_json() {
 
     OFILE=data.json
+    TOTALFILES=`ls *-aggregate.json | wc -l`
+
     echo "[" >> $OFILE
+
+    FILEN=0
     for i in `ls *-aggregate.json`
     do
 	cat $i >> $OFILE
-	echo "," >> $OFILE
+	((FILEN+=1))
+	if [ "$FILEN" -ne "$TOTALFILES" ]; then
+	    echo "," >> $OFILE
+	fi
     done
+
+    echo "" >> $OFILE
     echo "]" >> $OFILE
 }
 
-generate_data_json
+#generate_data_json

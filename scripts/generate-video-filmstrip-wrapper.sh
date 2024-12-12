@@ -28,13 +28,13 @@ generate_platform_by_sitelist() {
        echo "${URLM}"
 
        FFJSON=${FIREFOXDIR}/${URLM}-metrics.json
-       FFMAX=`cat ${FFJSON} | jq -r '.VisualComplete99'`
+       FFMAX=`cat ${FFJSON} | jq -r '.LastVisualChange.median'`
        FFV="${ODIR}/${ARTIFACT_BASE}-firefox.mp4"
        $XTHUMBNAILS $FFV $FFMAX
        echo "$FFV + $FFMAX"
 
        CJSON=${CHROMEDIR}/${URLM}-metrics.json
-       CMAX=`cat ${CJSON} | jq -r '.VisualComplete99'`
+       CMAX=`cat ${CJSON} | jq -r '.LastVisualChange.median'`
        CV="${ODIR}/${ARTIFACT_BASE}-chrome.mp4"
        $XTHUMBNAILS $CV $CMAX
        echo "$CV + $CMAX"
