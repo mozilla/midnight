@@ -52,7 +52,7 @@ generate_platform_by_sitelist() {
        CMJ="${CHROMEDIR}/${URLM}-metrics.json"
        CFJ="${ODIR}/${ARTIFACT_BASE}-chrome-filmstrip.json"
 
-       $XAGGREGATE "$URLM" "$PLATFORM" "$ISODATE" "${ARTIFACT_BASE}-side-by-side.mp4" "$FFFJ" "$FFMJ" "$CFJ" "$CMJ"
+       $XAGGREGATE "$URLM" "$i" "$PLATFORM" "$ISODATE" "${ARTIFACT_BASE}-side-by-side.mp4" "$FFFJ" "$FFMJ" "$CFJ" "$CMJ"
    done
 }
 
