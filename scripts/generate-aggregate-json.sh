@@ -2,8 +2,8 @@
 
 XURLMIN=$MOZPERFAX/bin/moz-perf-x-transform-url.exe
 XAGGREGATE=../../scripts/generate_aggregate_json_by_date.py
-CHROMEDIR=chrome_release
-FIREFOXDIR=fenix_nightly
+CHROMEDIR=chrome
+FIREFOXDIR=firefox
 
 ODIR=tmp
 if [ ! -d tmp ]; then
@@ -80,4 +80,4 @@ generate_data_json() {
     echo "]" >> $OFILE
 }
 
-#generate_data_json
+generate_data_json

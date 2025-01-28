@@ -3,8 +3,8 @@
 XURLMIN=$MOZPERFAX/bin/moz-perf-x-transform-url.exe
 XTHUMBNAILS=../../scripts/generate_video_filmstrip_standalone.py
 
-CHROMEDIR=chrome_release
-FIREFOXDIR=fenix_nightly
+CHROMEDIR=chrome
+FIREFOXDIR=firefox
 
 ODIR=tmp
 if [ ! -d tmp ]; then
@@ -44,4 +44,5 @@ generate_platform_by_sitelist() {
 
 }
 
-generate_platform_by_sitelist "android" "../sitelist.txt" "2024-11-10"
+#generate_platform_by_sitelist "linux" "../sitelist.txt" "2024-12-11"
+generate_platform_by_sitelist "android" "../sitelist.txt" "2024-12-18"

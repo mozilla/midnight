@@ -3,8 +3,8 @@
 XURLMIN=$MOZPERFAX/bin/moz-perf-x-transform-url.exe
 XSIDEXSIDE=../../scripts/generate_video_side_by_side_standalone.py
 
-CHROMEDIR=chrome_release
-FIREFOXDIR=fenix_nightly
+CHROMEDIR=chrome
+FIREFOXDIR=firefox
 
 ODIR=tmp
 if [ ! -d tmp ]; then
@@ -61,7 +61,8 @@ generate_platform_by_sitelist() {
        LEFT="$FIREFOXDIR/$URLM.mp4"
        RIGHT="$CHROMEDIR/$URLM.mp4"
 
-       $XSIDEXSIDE --base-video $LEFT --new-video $RIGHT
+       #$XSIDEXSIDE --base-video $LEFT --new-video $RIGHT
+       $XSIDEXSIDE --base-video $LEFT --new-video $RIGHT --remove-orange
 
        # rename
        mv custom-side-by-side.mp4 ${ODIR}/${ARTIFACT_BASE}-side-by-side.mp4
@@ -76,4 +77,5 @@ generate_platform_by_sitelist() {
 
 }
 
-generate_platform_by_sitelist "android" "../sitelist.txt" "2024-11-10"
+#generate_platform_by_sitelist "linux" "../sitelist.txt" "2024-12-11"
+generate_platform_by_sitelist "android" "../sitelist.txt" "2024-12-18"
