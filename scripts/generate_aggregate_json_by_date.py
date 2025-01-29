@@ -21,27 +21,36 @@ fjsnmetric = sys.argv[7];
 cjsnfilm = sys.argv[8];
 cjsnmetric = sys.argv[9];
 
+metrics_sfx = "-metrics.json"
+power_sfx = "-power.json"
 
 # Consolidate per-date and platform data files into one file.
 # json for filmstrips, json for metrics
 def serialize_aggregate(tname, url, tplatform, date, sbys_video,
                         flmfirefoxj, mtrxfirefoxj,
                         flmchromej, mtrxchromej):
-    vdict = {"test" : tname }
+    vdict = { }
     vdict["platform"] = tplatform
     vdict["date"] = date
-    vdict = {"url" : url }
+    vdict["test"] = tname
+    vdict["url"] = url
     vdict["url_content_traits"] = classify_web_content_traits(url)
     vdict["video_side_by_side"] = sbys_video
     with open(flmfirefoxj, 'r') as jff:
         firefox_dict = json.load(jff)
-        with open(mtrxfirefoxj, 'r') as jfm:
+        with open(mtrxfirefoxj + power_sfx, 'r') as jfpow:
+            firefoxp_dict = json.load(jfpow)
+            firefox_dict["power"] = firefoxp_dict
+        with open(mtrxfirefoxj + metrics_sfx, 'r') as jfm:
             firefoxm_dict = json.load(jfm)
             firefox_dict["metrics"] = firefoxm_dict
         vdict["firefox"] = firefox_dict
     with open(flmchromej, 'r') as jc:
       chrome_dict = json.load(jc)
-      with open(mtrxchromej, 'r') as jcm:
+      with open(mtrxchromej + power_sfx, 'r') as jcpow:
+          chromep_dict = json.load(jcpow)
+          chrome_dict["power"] = chromep_dict
+      with open(mtrxchromej + metrics_sfx, 'r') as jcm:
           chromem_dict = json.load(jcm)
           chrome_dict["metrics"] = chromem_dict
       vdict["chrome"] = chrome_dict

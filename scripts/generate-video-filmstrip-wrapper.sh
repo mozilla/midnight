@@ -44,5 +44,4 @@ generate_platform_by_sitelist() {
 
 }
 
-#generate_platform_by_sitelist "linux" "../sitelist.txt" "2024-12-11"
-generate_platform_by_sitelist "android" "../sitelist.txt" "2024-12-18"
+generate_platform_by_sitelist "android" "./sitelist.txt" "2025-01-27"

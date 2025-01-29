@@ -17,6 +17,9 @@ ofnamebase = os.path.basename(filenamebase)
 print("input file: ", ifile)
 print("ofilenamebase: ", ofnamebase)
 
+#imgformat = "png"
+imgformat = "webp"
+
 
 # Find duration of input video file in milliseconds
 def video_duration(ivideo):
@@ -77,11 +80,11 @@ def generate_video_filmstrip_partition_n(ivideo, totaln):
             timecodemin = int(timecoden/60)
             timecodesec = timecoden - timecodemin;
             thumbflag = "-ss 00:" + str(timecodemin) + ":" + str(timecodesec) + cspace + "-update -frames:v 1"
-        ofname = f"{filenamebase}_{i:02d}.png"
+        ofname = f"{filenamebase}_{i:02d}.{imgformat}"
         fcommand="ffmpeg -i " + ifile + cspace + thumbflag + cspace + ofname
         #print(str(timecoden) + cspace + fcommand)
         os.system(fcommand)
-        filmstrip_dict[str(i)] = f"{ofnamebase}_{i:02d}.png"
+        filmstrip_dict[str(i)] = f"{ofnamebase}_{i:02d}.{imgformat}"
 
 
 # intervaln is integer of interval between frames in milliseconds (ms)
@@ -101,11 +104,11 @@ def generate_video_filmstrip_interval(ivideo, intervaln):
             thumbflag = "-ss 00:" + str(timecodemin) + ":" + str(timecodesec) + cspace + "-frames:v 1"
         #timecodestr = f"{timecoden:.2f}"
         timecodestr = f"{timecodems:05}"
-        ofname = f"{filenamebase}_{timecodestr}.png"
+        ofname = f"{filenamebase}_{timecodestr}.{imgformat}"
         fcommand="ffmpeg -i " + ifile + cspace + thumbflag + cspace + ofname
         #print(str(timecoden) + cspace + fcommand)
         os.system(fcommand)
-        filmstrip_dict[timecodestr] = f"{ofnamebase}_{timecodestr}.png"
+        filmstrip_dict[timecodestr] = f"{ofnamebase}_{timecodestr}.{imgformat}"
 
 
 # Assume ivideo.json file created during extraction.

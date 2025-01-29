@@ -46,17 +46,17 @@ generate_platform_by_sitelist() {
        echo "$i"
        echo "$URLM"
 
-       FFMJ="${FIREFOXDIR}/${URLM}-metrics.json"
+       FFMJ="${FIREFOXDIR}/${URLM}"
        FFFJ="${ODIR}/${ARTIFACT_BASE}-firefox-filmstrip.json"
 
-       CMJ="${CHROMEDIR}/${URLM}-metrics.json"
+       CMJ="${CHROMEDIR}/${URLM}"
        CFJ="${ODIR}/${ARTIFACT_BASE}-chrome-filmstrip.json"
 
        $XAGGREGATE "$URLM" "$i" "$PLATFORM" "$ISODATE" "${ARTIFACT_BASE}-side-by-side.mp4" "$FFFJ" "$FFMJ" "$CFJ" "$CMJ"
    done
 }
 
-generate_platform_by_sitelist "android" "../sitelist.txt" "2024-11-10"
+generate_platform_by_sitelist "android" "./sitelist.txt" "2025-01-27"
 
 # 3
 generate_data_json() {
