@@ -29,6 +29,9 @@ power_sfx = "-power.json"
 def serialize_aggregate(tname, url, tplatform, date, sbys_video,
                         flmfirefoxj, mtrxfirefoxj,
                         flmchromej, mtrxchromej):
+    fpowerj = mtrxfirefoxj + power_sfx;
+    cpowerj = mtrxchromej + power_sfx;
+
     vdict = { }
     vdict["platform"] = tplatform
     vdict["date"] = date
@@ -38,18 +41,24 @@ def serialize_aggregate(tname, url, tplatform, date, sbys_video,
     vdict["video_side_by_side"] = sbys_video
     with open(flmfirefoxj, 'r') as jff:
         firefox_dict = json.load(jff)
-        with open(mtrxfirefoxj + power_sfx, 'r') as jfpow:
-            firefoxp_dict = json.load(jfpow)
-            firefox_dict["power"] = firefoxp_dict
+        if os.path.exists(fpowerj):
+            with open(fpowerj, 'r') as jfpow:
+                firefoxp_dict = json.load(jfpow)
+                firefox_dict["power"] = firefoxp_dict
+        else:
+            firefox_dict["power"] = { }
         with open(mtrxfirefoxj + metrics_sfx, 'r') as jfm:
             firefoxm_dict = json.load(jfm)
             firefox_dict["metrics"] = firefoxm_dict
         vdict["firefox"] = firefox_dict
     with open(flmchromej, 'r') as jc:
       chrome_dict = json.load(jc)
-      with open(mtrxchromej + power_sfx, 'r') as jcpow:
-          chromep_dict = json.load(jcpow)
-          chrome_dict["power"] = chromep_dict
+      if os.path.exists(cpowerj):
+          with open(mtrxchromej + power_sfx, 'r') as jcpow:
+              chromep_dict = json.load(jcpow)
+              chrome_dict["power"] = chromep_dict
+      else:
+          chrome_dict["power"] = { }
       with open(mtrxchromej + metrics_sfx, 'r') as jcm:
           chromem_dict = json.load(jcm)
           chrome_dict["metrics"] = chromem_dict
