@@ -58,18 +58,11 @@ generate_platform_by_sitelist() {
        $XAGGREGATE "$URLM" "$i" "$PLATFORM" "$ISODATE" "${ARTIFACT_BASE}-side-by-side.mp4" "$FFFJ" "$FFMJ" "$CFJ" "$CMJ"
 
        # generate markdown index
-#       echo "- [" >> $MDOWNFILE
-#       echo $URLM >> $MDOWNFILE
-#       echo "](/pages/" >> $MDOWNFILE
-#       echo $ARTIFACT_BASE >> $MDOWNFILE
-#       echo "-aggregate.svg" >> $MDOWNFILE
-#       echo ")" >> $MDOWNFILE
-
        echo "- [${URLM}](/pages/${ARTIFACT_BASE}-aggregate.svg)" >> $MDOWNFILE
    done
 }
 
-generate_platform_by_sitelist "android" "./sitelist.txt" "2025-01-29"
+generate_platform_by_sitelist "android" "./sitelist.txt" "2025-02-03"
 
 # 3
 generate_data_json() {

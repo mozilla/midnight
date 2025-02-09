@@ -58,4 +58,4 @@ generate_platform_by_sitelist() {
 
 }
 
-generate_platform_by_sitelist "android" "./sitelist.txt" "2025-01-29"
+generate_platform_by_sitelist "android" "./sitelist.txt" "2025-02-03"
