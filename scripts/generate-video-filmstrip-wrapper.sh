@@ -27,16 +27,29 @@ generate_platform_by_sitelist() {
        echo "$i"
        echo "${URLM}"
 
-       CUTMETRIC=.LastVisualChange.median
-
        FFJSON=${FIREFOXDIR}/${URLM}-metrics.json
-       FFCUTP=`grep -c ${CUTMETRIC} ${FFJSON}`
-       FFMAX=0
-       if [ "${FFCUTP}" -gt 0 ]; then
-	   FFMAX=`cat ${FFJSON} | jq -r '$CUTMETRIC'`
-       fi
-       echo "$URLM LastVisualChange firefox is $FFMAX"
+       FFCUT1P=`cat ${FFJSON} | jq -r '.LastVisualChange.median'`
+       FFCUT2P=`cat ${FFJSON} | jq -r '.loadEventEnd.median'`
+       FFCUT3P=`cat ${FFJSON} | jq -r '.domComplete.median'`
+       echo "$FFJSON	$FFCUT1P	$FFCUT2P	$FFCUT3P"
 
+       FFMAX=0
+       if [ "${FFCUT1P}" != "null" ]; then
+	   FFMAX=${FFCUT1P}
+	   echo "$URLM LastVisualChange firefox is $FFMAX"
+       else
+	   if [ "${FFCUT2P}" != "null" ]; then
+	       FFMAX=${FFCUT2P}
+	       echo "$URLM LoadEventEnd firefox is $FFMAX"
+	   else
+	       if [ "${FFCUT3P}" != "null" ]; then
+		   FFMAX=${FFCUT3P}
+		   echo "$URLM domComplete firefox is $FFMAX"
+	       else
+		   echo "$URLM cut mystery, skipped"
+	       fi
+	   fi
+       fi
        FFV="${ODIR}/${ARTIFACT_BASE}-firefox.mp4"
        $XTHUMBNAILS $FFV $FFMAX
        echo "$FFV + $FFMAX"
