@@ -28,13 +28,40 @@ generate_platform_by_sitelist() {
        echo "${URLM}"
 
        FFJSON=${FIREFOXDIR}/${URLM}-metrics.json
-       FFMAX=`cat ${FFJSON} | jq -r '.LastVisualChange.median'`
+       FFCUT1P=`cat ${FFJSON} | jq -r '.LastVisualChange.median'`
+       FFCUT2P=`cat ${FFJSON} | jq -r '.loadEventEnd.median'`
+       FFCUT3P=`cat ${FFJSON} | jq -r '.domComplete.median'`
+       echo "$FFJSON	$FFCUT1P	$FFCUT2P	$FFCUT3P"
+
+       FFMAX=0
+       if [ "${FFCUT1P}" != "null" ]; then
+	   FFMAX=${FFCUT1P}
+	   echo "$URLM LastVisualChange firefox is $FFMAX"
+       else
+	   if [ "${FFCUT2P}" != "null" ]; then
+	       FFMAX=${FFCUT2P}
+	       echo "$URLM LoadEventEnd firefox is $FFMAX"
+	   else
+	       if [ "${FFCUT3P}" != "null" ]; then
+		   FFMAX=${FFCUT3P}
+		   echo "$URLM domComplete firefox is $FFMAX"
+	       else
+		   echo "$URLM cut mystery, skipped"
+	       fi
+	   fi
+       fi
        FFV="${ODIR}/${ARTIFACT_BASE}-firefox.mp4"
        $XTHUMBNAILS $FFV $FFMAX
        echo "$FFV + $FFMAX"
 
        CJSON=${CHROMEDIR}/${URLM}-metrics.json
-       CMAX=`cat ${CJSON} | jq -r '.LastVisualChange.median'`
+       CCUTP=`grep -c ${CUTMETRIC} ${CJSON}`
+       CMAX=0
+       if [ "${CCUTP}" -gt 0 ]; then
+	   CMAX=`cat ${CJSON} | jq -r '$CUTMETRIC'`
+       fi
+       echo "$URLM LastVisualChange chrome is $CMAX"
+
        CV="${ODIR}/${ARTIFACT_BASE}-chrome.mp4"
        $XTHUMBNAILS $CV $CMAX
        echo "$CV + $CMAX"
@@ -44,5 +71,6 @@ generate_platform_by_sitelist() {
 
 }
 
-TPMETADATA="android-14-a55"
-generate_platform_by_sitelist "$TPMETADATA" "./sitelist.txt" "2025-01-27"
+
+TPMETADATA="android-15-p8"
+generate_platform_by_sitelist "$TPMETADATA" "./sitelist.txt" "2025-02-09"

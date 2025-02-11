@@ -37,8 +37,6 @@ print("duration in ms: ", durms)
 
 # limits, hard max is 10sec.
 hardmax = 10 * 1000;
-
-# From found LastVisualChange, if it exists.
 maxvlen = int(sys.argv[2]);
 
 def minimum(a, b):
@@ -48,10 +46,7 @@ def minimum(a, b):
     return b
 
 def minimum_vlen():
-    if (maxvlen != 0):
-        a = minimum(maxvlen, hardmax)
-    else:
-        a = hardmax;
+    a = minimum(maxvlen, hardmax)
     b = minimum(a, durms)
     return b
 
