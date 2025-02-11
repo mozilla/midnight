@@ -24,49 +24,71 @@ generate_platform_by_sitelist() {
        TPLATFORM="${PLATFORM}-${URLM}"
        ARTIFACT_BASE="$ISODATE-$TPLATFORM";
 
-       echo "$i"
-       echo "${URLM}"
+       echo "starting	${i}: ${URLM}"
 
+       # Generate thumbnails for firefox video.
        FFJSON=${FIREFOXDIR}/${URLM}-metrics.json
-       FFCUT1P=`cat ${FFJSON} | jq -r '.LastVisualChange.median'`
-       FFCUT2P=`cat ${FFJSON} | jq -r '.loadEventEnd.median'`
-       FFCUT3P=`cat ${FFJSON} | jq -r '.domComplete.median'`
-       echo "$FFJSON	$FFCUT1P	$FFCUT2P	$FFCUT3P"
+       if [ -f "${FFJSON}" ]; then
+	   FFCUT1P=`cat ${FFJSON} | jq -r '.LastVisualChange.median'`
+	   FFCUT2P=`cat ${FFJSON} | jq -r '.loadEventEnd.median'`
+	   FFCUT3P=`cat ${FFJSON} | jq -r '.domComplete.median'`
+	   echo "$FFJSON	$FFCUT1P	$FFCUT2P	$FFCUT3P"
 
-       FFMAX=0
-       if [ "${FFCUT1P}" != "null" ]; then
-	   FFMAX=${FFCUT1P}
-	   echo "$URLM LastVisualChange firefox is $FFMAX"
-       else
-	   if [ "${FFCUT2P}" != "null" ]; then
-	       FFMAX=${FFCUT2P}
-	       echo "$URLM LoadEventEnd firefox is $FFMAX"
+	   FFMAX=0
+	   if [ "${FFCUT1P}" != "null" ]; then
+	       FFMAX=${FFCUT1P}
+	       echo "$URLM LastVisualChange firefox is $FFMAX"
 	   else
-	       if [ "${FFCUT3P}" != "null" ]; then
-		   FFMAX=${FFCUT3P}
-		   echo "$URLM domComplete firefox is $FFMAX"
+	       if [ "${FFCUT2P}" != "null" ]; then
+		   FFMAX=${FFCUT2P}
+		   echo "$URLM LoadEventEnd firefox is $FFMAX"
 	       else
-		   echo "$URLM cut mystery, skipped"
+		   if [ "${FFCUT3P}" != "null" ]; then
+		       FFMAX=${FFCUT3P}
+		       echo "$URLM domComplete firefox is $FFMAX"
+		   else
+		       echo "$URLM cut mystery firefox, skipped"
+		   fi
 	       fi
 	   fi
+	   FFV="${ODIR}/${ARTIFACT_BASE}-firefox.mp4"
+	   $XTHUMBNAILS $FFV $FFMAX
+	   echo "firefox: $FFV $FFMAX thumbnailing done"
+       else
+	   "cannot find firefox metrics file for: $URLM, skipping."
        fi
-       FFV="${ODIR}/${ARTIFACT_BASE}-firefox.mp4"
-       $XTHUMBNAILS $FFV $FFMAX
-       echo "$FFV + $FFMAX"
 
+       # Generate thumbnails for chrome video.
        CJSON=${CHROMEDIR}/${URLM}-metrics.json
-       CCUTP=`grep -c ${CUTMETRIC} ${CJSON}`
-       CMAX=0
-       if [ "${CCUTP}" -gt 0 ]; then
-	   CMAX=`cat ${CJSON} | jq -r '$CUTMETRIC'`
+       if [ -f "${CJSON}" ]; then
+	   CCUT1P=`cat ${CJSON} | jq -r '.LastVisualChange.median'`
+	   CCUT2P=`cat ${CJSON} | jq -r '.loadEventEnd.median'`
+	   CCUT3P=`cat ${CJSON} | jq -r '.domComplete.median'`
+	   echo "$CJSON		$CCUT1P	$CCUT2P	$CCUT3P"
+
+	   CMAX=0
+	   if [ "${CCUT1P}" != "null" ]; then
+	       CMAX=${CCUT1P}
+	       echo "$URLM LastVisualChange firefox is $CMAX"
+	   else
+	       if [ "${CCUT2P}" != "null" ]; then
+		   CMAX=${CCUT2P}
+		   echo "$URLM LoadEventEnd firefox is $CMAX"
+	       else
+		   if [ "${CCUT3P}" != "null" ]; then
+		       CMAX=${CCUT3P}
+		       echo "$URLM domComplete firefox is $CMAX"
+		   else
+		       echo "$URLM cut mystery chrome, skipped"
+		   fi
+	       fi
+	   fi
+	   CV="${ODIR}/${ARTIFACT_BASE}-chrome.mp4"
+	   $XTHUMBNAILS $CV $CMAX
+	   echo "chrome: $CV $CMAX thumbnailing done"
+       else
+	   "cannot find chrome metrics file for: $URLM, skipping."
        fi
-       echo "$URLM LastVisualChange chrome is $CMAX"
-
-       CV="${ODIR}/${ARTIFACT_BASE}-chrome.mp4"
-       $XTHUMBNAILS $CV $CMAX
-       echo "$CV + $CMAX"
-
-       echo ""
    done
 
 }

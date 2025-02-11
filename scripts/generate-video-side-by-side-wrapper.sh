@@ -77,5 +77,5 @@ generate_platform_by_sitelist() {
 
 }
 
-TPMETADATA="android-14-a55"
-generate_platform_by_sitelist "$TPMETADATA" "./sitelist.txt" "2025-01-27"
+TPMETADATA="android-15-p8"
+generate_platform_by_sitelist "$TPMETADATA" "./sitelist.txt" "2025-02-09"
