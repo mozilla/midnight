@@ -37,8 +37,10 @@ generate_platform_by_sitelist() {
     SITELIST="$2"
     ISODATE="$3"
 
-   MDOWNFILE=index-proto.md
-   echo "## Results" >> $MDOWNFILE
+   MDOWNIDX=index-proto.md
+   echo "## Results" >> $MDOWNIDX
+
+   JSIDX=index-proto.js
 
    for i in `cat ${SITELIST}`
    do
@@ -58,12 +60,17 @@ generate_platform_by_sitelist() {
        $XAGGREGATE "$URLM" "$i" "$PLATFORM" "$ISODATE" "${ARTIFACT_BASE}-side-by-side.mp4" "$FFFJ" "$FFMJ" "$CFJ" "$CMJ"
 
        # generate markdown index
-       echo "- [${URLM}](/pages/${ARTIFACT_BASE}-aggregate.svg)" >> $MDOWNFILE
+       echo "- [${URLM}](/pages/${ARTIFACT_BASE}-aggregate.svg)" >> $MDOWNIDX
+
+       # generate js index
+       echo "\"${URLM}\", " >> $JSIDX
    done
 }
 
-TPMETADATA="android-15-p8"
-generate_platform_by_sitelist "$TPMETADATA" "./sitelist.txt" "2025-02-09"
+#TPMETADATA="android-15-p8"
+#TPMETADATA="linux-18"
+TPMETADATA="windows-11"
+generate_platform_by_sitelist "$TPMETADATA" "./sitelist.txt" "2025-02-12"
 
 # 3
 generate_data_json() {
