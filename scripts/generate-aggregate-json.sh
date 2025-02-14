@@ -110,9 +110,9 @@ generate_2_col_index() {
     echo "<table>" >> $MDOWNIDX2
     echo "<thead>" >> $MDOWNIDX2
     echo "<tr>" >> $MDOWNIDX2
-    echo "<th>URL</th>" >> $MDOWNIDX2
-    echo "<th>${PLATFORM1}</th>" >> $MDOWNIDX2
-    echo "<th>${PLATFORM2}</th>" >> $MDOWNIDX2
+    echo "<th align=\"left\">URL</th>" >> $MDOWNIDX2
+    echo "<th align=\"left\">${PLATFORM1}</th>" >> $MDOWNIDX2
+    echo "<th align=\"left\">${PLATFORM2}</th>" >> $MDOWNIDX2
     echo "</tr>" >> $MDOWNIDX2
     echo "</thead>" >> $MDOWNIDX2
 
