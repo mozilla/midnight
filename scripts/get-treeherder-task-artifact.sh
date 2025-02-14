@@ -129,3 +129,54 @@ get_artifact_and_unpack "$TPMETADATA" "stacko" "firefox" ""
 get_artifact_and_unpack "$TPMETADATA" "wikipedia" "firefox" ""
 get_artifact_and_unpack "$TPMETADATA" "youtube" "firefox" ""
 get_artifact_and_unpack "$TPMETADATA" "youtube-w" "firefox" ""
+
+
+
+TPMETADATA1="linux-18"
+TPMETADATA2="windows-11"
+
+# 2025-02-12
+# revision 11a45cb6835c49c696ef4ff610c42af1e47e7a1b tier 3 Btime-ChR
+get_artifact_and_unpack "$TPMETADATA1" "amazon" "chrome" ""
+get_artifact_and_unpack "$TPMETADATA1" "bing" "chrome" ""
+get_artifact_and_unpack "$TPMETADATA1" "cnn" "chrome" ""
+get_artifact_and_unpack "$TPMETADATA1" "fandom" "chrome" ""
+get_artifact_and_unpack "$TPMETADATA1" "gslides" "chrome" ""
+get_artifact_and_unpack "$TPMETADATA1" "instagram" "chrome" ""
+get_artifact_and_unpack "$TPMETADATA1" "twitter" "chrome" ""
+get_artifact_and_unpack "$TPMETADATA1" "wikipedia" "chrome" ""
+get_artifact_and_unpack "$TPMETADATA1" "yahoo-mail" "chrome" ""
+
+#get_artifact_and_unpack "$TPMETADATA2" "amazon" "chrome" ""
+#get_artifact_and_unpack "$TPMETADATA2" "bing" "chrome" ""
+#get_artifact_and_unpack "$TPMETADATA2" "cnn" "chrome" ""
+#get_artifact_and_unpack "$TPMETADATA2" "fandom" "chrome" ""
+#get_artifact_and_unpack "$TPMETADATA2" "gslides" "chrome" ""
+#get_artifact_and_unpack "$TPMETADATA2" "instagram" "chrome" ""
+#get_artifact_and_unpack "$TPMETADATA2" "twitter" "chrome" ""
+#get_artifact_and_unpack "$TPMETADATA2" "wikipedia" "chrome" ""
+#get_artifact_and_unpack "$TPMETADATA2" "yahoo-mail" "chrome" ""
+
+
+
+# 2025-02-12
+# revision 67ec343f7371867197cf934cb798dd9bb4630bd2 tier 1 Btime
+get_artifact_and_unpack "$TPMETADATA1" "amazon" "firefox" ""
+get_artifact_and_unpack "$TPMETADATA1" "bing" "firefox" ""
+get_artifact_and_unpack "$TPMETADATA1" "cnn" "firefox" ""
+get_artifact_and_unpack "$TPMETADATA1" "fandom" "firefox" ""
+get_artifact_and_unpack "$TPMETADATA1" "gslides" "firefox" ""
+get_artifact_and_unpack "$TPMETADATA1" "instagram" "firefox" ""
+get_artifact_and_unpack "$TPMETADATA1" "twitter" "firefox" ""
+get_artifact_and_unpack "$TPMETADATA1" "wikipedia" "firefox" ""
+get_artifact_and_unpack "$TPMETADATA1" "yahoo-mail" "firefox" ""
+
+#get_artifact_and_unpack "$TPMETADATA2" "amazon" "firefox" ""
+#get_artifact_and_unpack "$TPMETADATA2" "bing" "firefox" ""
+#get_artifact_and_unpack "$TPMETADATA2" "cnn" "firefox" ""
+#get_artifact_and_unpack "$TPMETADATA2" "fandom" "firefox" ""
+#get_artifact_and_unpack "$TPMETADATA2" "gslides" "firefox" ""
+#get_artifact_and_unpack "$TPMETADATA2" "instagram" "firefox" ""
+#get_artifact_and_unpack "$TPMETADATA2" "twitter" "firefox" ""
+#get_artifact_and_unpack "$TPMETADATA2" "wikipedia" "firefox" ""
+#get_artifact_and_unpack "$TPMETADATA2" "yahoo-mail" "firefox" ""
