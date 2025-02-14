@@ -129,8 +129,8 @@ generate_2_col_index() {
 	# generate 2-col html table for markdown embedding
 	echo "<tr>" >> $MDOWNIDX2
 	echo "<td>${URLM}</td>" >> $MDOWNIDX2
-	echo "<td><a href="pages/${ARTIFACT_BASE1}-aggregate.svg">Y</a></td>" >> $MDOWNIDX2
-	echo "<td><a href="pages/${ARTIFACT_BASE2}-aggregate.svg">Y</a></td>" >> $MDOWNIDX2
+	echo "<td><a href=\"pages/${ARTIFACT_BASE1}-aggregate.svg\">Y</a></td>" >> $MDOWNIDX2
+	echo "<td><a href=\"pages/${ARTIFACT_BASE2}-aggregate.svg\">Y</a></td>" >> $MDOWNIDX2
 	echo "</tr>" >> $MDOWNIDX2
     done
 
