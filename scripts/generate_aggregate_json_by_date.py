@@ -26,6 +26,7 @@ power_sfx = "-power.json"
 
 # Consolidate per-date and platform data files into one file.
 # json for filmstrips, json for metrics
+# firefox and chrome sections
 def serialize_aggregate(tname, url, tplatform, date, sbys_video,
                         flmfirefoxj, mtrxfirefoxj,
                         flmchromej, mtrxchromej):
@@ -39,30 +40,37 @@ def serialize_aggregate(tname, url, tplatform, date, sbys_video,
     vdict["url"] = url
     vdict["url_content_traits"] = classify_web_content_traits(url)
     vdict["video_side_by_side"] = sbys_video
-    with open(flmfirefoxj, 'r') as jff:
-        firefox_dict = json.load(jff)
-        if os.path.exists(fpowerj):
-            with open(fpowerj, 'r') as jfpow:
-                firefoxp_dict = json.load(jfpow)
-                firefox_dict["power"] = firefoxp_dict
-        else:
-            firefox_dict["power"] = { }
-        with open(mtrxfirefoxj + metrics_sfx, 'r') as jfm:
-            firefoxm_dict = json.load(jfm)
-            firefox_dict["metrics"] = firefoxm_dict
-        vdict["firefox"] = firefox_dict
-    with open(flmchromej, 'r') as jc:
-      chrome_dict = json.load(jc)
-      if os.path.exists(cpowerj):
-          with open(mtrxchromej + power_sfx, 'r') as jcpow:
-              chromep_dict = json.load(jcpow)
-              chrome_dict["power"] = chromep_dict
-      else:
-          chrome_dict["power"] = { }
-      with open(mtrxchromej + metrics_sfx, 'r') as jcm:
-          chromem_dict = json.load(jcm)
-          chrome_dict["metrics"] = chromem_dict
-      vdict["chrome"] = chrome_dict
+
+    # firefox metrics, filmstrip
+    if os.path.exists(flmfirefoxj):
+        with open(flmfirefoxj, 'r') as jff:
+            firefox_dict = json.load(jff)
+            if os.path.exists(fpowerj):
+                with open(fpowerj, 'r') as jfpow:
+                    firefoxp_dict = json.load(jfpow)
+                    firefox_dict["power"] = firefoxp_dict
+            else:
+                firefox_dict["power"] = { }
+            with open(mtrxfirefoxj + metrics_sfx, 'r') as jfm:
+                firefoxm_dict = json.load(jfm)
+                firefox_dict["metrics"] = firefoxm_dict
+            vdict["firefox"] = firefox_dict
+
+    # chrome metrics, filmstrip
+    if os.path.exists(flmchromej):
+        with open(flmchromej, 'r') as jc:
+            chrome_dict = json.load(jc)
+            if os.path.exists(cpowerj):
+                with open(mtrxchromej + power_sfx, 'r') as jcpow:
+                    chromep_dict = json.load(jcpow)
+                    chrome_dict["power"] = chromep_dict
+            else:
+                chrome_dict["power"] = { }
+            with open(mtrxchromej + metrics_sfx, 'r') as jcm:
+                chromem_dict = json.load(jcm)
+                chrome_dict["metrics"] = chromem_dict
+            vdict["chrome"] = chrome_dict
+
     ofname = date + "-" + tplatform + "-" + tname + "-aggregate.json"
     with open(ofname, 'w') as of:
         json.dump(vdict, of, indent=2)
