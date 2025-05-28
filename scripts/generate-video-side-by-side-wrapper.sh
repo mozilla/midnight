@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+# Assumes cv installed.
+# sudo dnf install python3-opencv python3-matplotlib python3-numpy
 XURLMIN=$MOZPERFAX/bin/moz-perf-x-transform-url.exe
 XSIDEXSIDE=../../scripts/generate_video_side_by_side_standalone.py
 
