@@ -140,4 +140,4 @@ generate_2_col_index() {
 
 TPMETADATA_A=$TPMETADATA1
 TPMETADATA_B=$TPMETADATA2
-generate_2_col_index "$TPMETADATA_A" "2025-02-09" "$TPMETADATA_B" "2025-02-10" "./sitelist.txt"
+generate_2_col_index "$TPMETADATA_A" "2025-02-09" "$TPMETADATA_B" "2025-05-27" "./sitelist.txt"
