@@ -57,6 +57,7 @@ generate_platform_by_sitelist() {
        else
 	   "cannot find firefox metrics file for: $URLM, skipping."
        fi
+       echo ""
 
        # Generate thumbnails for chrome video.
        CJSON=${CHROMEDIR}/${URLM}-metrics.json
@@ -69,15 +70,15 @@ generate_platform_by_sitelist() {
 	   CMAX=0
 	   if [ "${CCUT1P}" != "null" ]; then
 	       CMAX=${CCUT1P}
-	       echo "$URLM LastVisualChange firefox is $CMAX"
+	       echo "$URLM LastVisualChange chrome is $CMAX"
 	   else
 	       if [ "${CCUT2P}" != "null" ]; then
 		   CMAX=${CCUT2P}
-		   echo "$URLM LoadEventEnd firefox is $CMAX"
+		   echo "$URLM LoadEventEnd chrome is $CMAX"
 	       else
 		   if [ "${CCUT3P}" != "null" ]; then
 		       CMAX=${CCUT3P}
-		       echo "$URLM domComplete firefox is $CMAX"
+		       echo "$URLM domComplete chrome is $CMAX"
 		   else
 		       echo "$URLM cut mystery chrome, skipped"
 		   fi
@@ -89,10 +90,13 @@ generate_platform_by_sitelist() {
        else
 	   "cannot find chrome metrics file for: $URLM, skipping."
        fi
+       echo ""
+
    done
 
 }
 
 
-TPMETADATA="android-15-p8"
-generate_platform_by_sitelist "$TPMETADATA" "./sitelist.txt" "2025-02-09"
+#TPMETADATA="android-15-p8"
+TPMETADATA="android-15-ptablet"
+generate_platform_by_sitelist "$TPMETADATA" "./sitelist.txt" "2025-05-27"
