@@ -2,6 +2,8 @@
 
 XURLMIN=$MOZPERFAX/bin/moz-perf-x-transform-url.exe
 XAGGREGATE=../../scripts/generate_aggregate_json_by_date.py
+
+TDATE=$1
 CHROMEDIR=chrome
 FIREFOXDIR=firefox
 
@@ -27,7 +29,7 @@ get_aggregate() {
     $XAGGREGATE "$TESTN" "$PLATFORMN" "$ISODATE" "${ARTIFACT_BASE}-side-by-side.mp4" "${ARTIFACT_BASE}-firefox-filmstrip.json" "${ARTIFACT_BASE}-firefox-cold-browsertime-metrics.json" "${ARTIFACT_BASE}-chrome-filmstrip.json" "${ARTIFACT_BASE}-chrome-cold-browsertime-metrics.json"
 }
 
-#get_aggregate "amazon" "android" "2024-11-15"
+#get_aggregate "amazon" "android" "$TDATE"
 
 # 2
 generate_platform_by_sitelist() {
@@ -66,7 +68,7 @@ generate_platform_by_sitelist() {
    done
 }
 
-#generate_platform_by_sitelist "$TPMETADATA" "2025-02-12" "./sitelist.txt"
+generate_platform_by_sitelist "$TPMETADATA" "$TDATE" "./sitelist.txt"
 
 # 3
 generate_data_json() {
@@ -90,7 +92,7 @@ generate_data_json() {
     echo "]" >> $OFILE
 }
 
-#generate_data_json
+generate_data_json
 
 
 # 4
@@ -140,4 +142,4 @@ generate_2_col_index() {
 
 TPMETADATA_A=$TPMETADATA1
 TPMETADATA_B=$TPMETADATA2
-generate_2_col_index "$TPMETADATA_A" "2025-02-09" "$TPMETADATA_B" "2025-05-27" "./sitelist.txt"
+#generate_2_col_index "$TPMETADATA_A" "2025-02-09" "$TPMETADATA_B" "2025-05-27" "./sitelist.txt"

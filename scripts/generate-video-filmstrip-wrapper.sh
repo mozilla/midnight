@@ -3,6 +3,7 @@
 XURLMIN=$MOZPERFAX/bin/moz-perf-x-transform-url.exe
 XTHUMBNAILS=../../scripts/generate_video_filmstrip_standalone.py
 
+TDATE=$1
 CHROMEDIR=chrome
 FIREFOXDIR=firefox
 
@@ -99,4 +100,4 @@ generate_platform_by_sitelist() {
 
 #TPMETADATA="android-15-p8"
 TPMETADATA="android-15-ptablet"
-generate_platform_by_sitelist "$TPMETADATA" "./sitelist.txt" "2025-05-27"
+generate_platform_by_sitelist "$TPMETADATA" "./sitelist.txt" "$TDATE"
