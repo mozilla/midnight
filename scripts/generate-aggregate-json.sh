@@ -18,6 +18,7 @@ TPMETADATA3="android-14-a55"
 TPMETADATA4="linux-18"
 TPMETADATA5="windows-11"
 
+TPMETADATA=$TPMETADATA2
 
 get_aggregate() {
     TESTN="$1"
