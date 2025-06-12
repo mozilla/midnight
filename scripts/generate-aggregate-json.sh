@@ -4,6 +4,14 @@ XURLMIN=$MOZPERFAX/bin/moz-perf-x-transform-url.exe
 XAGGREGATE=../../scripts/generate_aggregate_json_by_date.py
 
 TDATE=$1
+
+#TPMETADATA1="android-15-p8"
+#TPMETADATA2="android-15-ptablet"
+#TPMETADATA3="android-14-a55"
+#TPMETADATA4="linux-18"
+#TPMETADATA5="windows-11"
+TPMETADATA=$2
+
 CHROMEDIR=chrome
 FIREFOXDIR=firefox
 
@@ -11,14 +19,6 @@ ODIR=tmp
 if [ ! -d tmp ]; then
     mkdir $ODIR
 fi
-
-TPMETADATA1="android-15-p8"
-TPMETADATA2="android-15-ptablet"
-TPMETADATA3="android-14-a55"
-TPMETADATA4="linux-18"
-TPMETADATA5="windows-11"
-
-TPMETADATA=$TPMETADATA2
 
 get_aggregate() {
     TESTN="$1"
@@ -141,6 +141,6 @@ generate_2_col_index() {
     echo "</table>" >> $MDOWNIDX2
 }
 
-TPMETADATA_A=$TPMETADATA1
-TPMETADATA_B=$TPMETADATA2
+#TPMETADATA_A=$TPMETADATA1
+#TPMETADATA_B=$TPMETADATA2
 #generate_2_col_index "$TPMETADATA_A" "2025-02-09" "$TPMETADATA_B" "2025-05-27" "./sitelist.txt"

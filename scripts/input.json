@@ -1,0 +1,31 @@
+
+[
+  {
+    "name": "Alice Johnson",
+    "age": 30,
+    "city": "New York",
+    "occupation": "Software Engineer",
+    "salary": 95000.75
+  },
+  {
+    "name": "Bob Williams",
+    "age": 24,
+    "city": "Los Angeles",
+    "occupation": "Graphic Designer",
+    "salary": 62500.50
+  },
+  {
+    "name": "Charlie Brown",
+    "age": 35,
+    "city": "Chicago",
+    "occupation": "Project Manager",
+    "salary": 110000.00
+  },
+  {
+    "name": "Diana Prince",
+    "age": 29,
+    "city": "London",
+    "occupation": "Data Scientist",
+    "salary": 88000.20
+  }
+]

@@ -4,6 +4,11 @@ XURLMIN=$MOZPERFAX/bin/moz-perf-x-transform-url.exe
 XTHUMBNAILS=../../scripts/generate_video_filmstrip_standalone.py
 
 TDATE=$1
+
+#TPMETADATA="android-15-p8"
+#TPMETADATA="android-15-ptablet"
+TPMETADATA=$2
+
 CHROMEDIR=chrome
 FIREFOXDIR=firefox
 
@@ -97,7 +102,4 @@ generate_platform_by_sitelist() {
 
 }
 
-
-#TPMETADATA="android-15-p8"
-TPMETADATA="android-15-ptablet"
 generate_platform_by_sitelist "$TPMETADATA" "./sitelist.txt" "$TDATE"
