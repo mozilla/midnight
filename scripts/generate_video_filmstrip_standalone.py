@@ -53,16 +53,18 @@ def minimum_vlen():
 print("max length of video: ", minimum_vlen())
 
 
-# serialiaztion dictionary for json
+# Output file that is a json serialiaztion dictionary of itemized shots.
 filmstrip_dict = {}
 
 # Extract frame from video stream at specified points.
-# Either pick a set number of result thumbnails (say 12) spaced discretely over entire duration
-# or an offset from the beginning given an interval in seconds (250ms = .25s)
-
+#
+# Either pick a set number of result thumbnails (say 12) spaced
+# discretely over entire duration or an offset from the beginning
+# given an interval in seconds (250ms = .25s)
+#
 # from
 # https://tinyurl.com/32m4ywhx
-
+#
 # "This example will seek to the position of 0h:0m:14sec:435msec and
 # output one frame (-frames:v 1) from that position into a PNG file.
 
