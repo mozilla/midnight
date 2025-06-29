@@ -12,9 +12,9 @@ TPMETADATA=$2
 SCRIPTSDIR=/home/bkoz/src/midnight.sfo/scripts/
 
 start_time=`date`
-$SCRIPTSDIR/generate-video-side-by-side-wrapper.sh $TDATE $TPMETADATA
-$SCRIPTSDIR/generate-video-filmstrip-wrapper.sh $TDATE $TPMETADATA
-$SCRIPTSDIR/generate-aggregate-json.sh $TDATE $TPMETADATA
+$SCRIPTSDIR/generate-video-side-by-side-wrapper.sh $TDATE $TPMETADATA .
+#$SCRIPTSDIR/generate-video-filmstrip-wrapper.sh $TDATE $TPMETADATA
+#$SCRIPTSDIR/generate-aggregate-json.sh $TDATE $TPMETADATA
 end_time=`date`
 
 echo "done"
