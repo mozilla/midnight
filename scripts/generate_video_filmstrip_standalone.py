@@ -12,12 +12,12 @@ from pathlib import Path
 # setup input file, output file naming conventions
 ifile = sys.argv[1];
 cpfile = sys.argv[2];
-maxvlen = int(sys.argv[2]);
 
 filename = Path(ifile);
 filenamebase = os.path.splitext(filename)[0]
 ofnamebase = os.path.basename(filenamebase)
-print("input file: ", ifile)
+print("input data file: ", ifile)
+print("input control points file: ", cpfile)
 print("ofilenamebase: ", ofnamebase)
 
 #imgformat = "png"
@@ -38,10 +38,6 @@ durms=video_duration(ifile)
 print("duration in ms: ", durms)
 
 
-# limits, hard max is 10sec.
-hardmax = 10 * 1000;
-
-
 def minimum(a, b):
   if a < b:
     return a
@@ -49,11 +45,12 @@ def minimum(a, b):
     return b
 
 def minimum_vlen():
+    # limits, hard max is 10sec.
+    hardmax = 10 * 1000;
+    maxvlen = int(sys.argv[2]);
     a = minimum(maxvlen, hardmax)
     b = minimum(a, durms)
     return b
-
-print("max length of video: ", minimum_vlen())
 
 
 # Output file that is a json serialiaztion dictionary of itemized shots.
@@ -94,6 +91,7 @@ def generate_video_filmstrip_partition_n(ivideo, totaln):
 
 # intervaln is integer of interval between frames in milliseconds (ms)
 def generate_video_filmstrip_interval(ivideo, intervaln):
+    print("max length of video: ", minimum_vlen())
     cspace = ' '
     totaln = int(minimum_vlen() / intervaln)
     offset = 0;
@@ -119,12 +117,11 @@ def generate_video_filmstrip_interval(ivideo, intervaln):
 # control points taken from SpeedIndexProgress visual metrics.
 def generate_video_filmstrip_control_points(ivideo, cpfilename):
     cspace = ' '
-
     try:
         with open(cpfilename, 'r') as f:
             for line in f:
-                timecodems = line.strip()
-                print(tcms)
+                timecodems = int(line.strip());
+                print(timecodems)
                 timecoden = float(timecodems / 1000);
                 if timecoden < 60:
                     thumbflag = "-ss 00:00:" + str(timecoden) + cspace + "-frames:v 1"
@@ -132,14 +129,14 @@ def generate_video_filmstrip_control_points(ivideo, cpfilename):
                     timecodemin = int(timecoden/60)
                     timecodesec = timecoden - timecodemin;
                     thumbflag = "-ss 00:" + str(timecodemin) + ":" + str(timecodesec) + cspace + "-frames:v 1"
-                    #timecodestr = f"{timecoden:.2f}"
-                    timecodestr = f"{timecodems:05}"
-                    ofname = f"{filenamebase}_{timecodestr}.{imgformat}"
-                    fcommand="ffmpeg -i " + ifile + cspace + thumbflag + cspace + ofname
-                    #print(str(timecoden) + cspace + fcommand)
-                    os.system(fcommand)
-                    filmstrip_dict[timecodestr] = f"{ofnamebase}_{timecodestr}.{imgformat}"
-
+                #timecodestr = f"{timecoden:.2f}"
+                #timecodestr = f"{timecodems:05}"
+                timecodestr = f"{timecodems:05d}"
+                ofname = f"{filenamebase}_{timecodestr}.{imgformat}"
+                fcommand="ffmpeg -i " + ifile + cspace + thumbflag + cspace + ofname
+                #print(str(timecoden) + cspace + fcommand)
+                os.system(fcommand)
+                filmstrip_dict[timecodestr] = f"{ofnamebase}_{timecodestr}.{imgformat}"
 
     except FileNotFoundError:
         print(f"Error: The file '{cpfilename}' was not found.", file=sys.stderr)
@@ -166,7 +163,7 @@ def serialize_data(ivideo, filmstrip_res, tdict, ofname):
 
 #generate_video_filmstrip_partition_n(ifile, 12)
 #generate_video_filmstrip_interval(ifile, 100)
-generate_video_filmstrip_control_points(ivideo, cpfile):
+generate_video_filmstrip_control_points(ifile, cpfile)
 
 #serialize_data(ifile, 100, filmstrip_dict, filenamebase + "-filmstrip.json")
 serialize_data(ifile, "control_points", filmstrip_dict, filenamebase + "-filmstrip.json")

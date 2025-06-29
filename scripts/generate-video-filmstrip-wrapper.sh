@@ -9,7 +9,29 @@ TDATE=$1
 #TPMETADATA="android-15-ptablet"
 TPMETADATA=$2
 
-TSITELIST=$3
+TRDIR=$3
+
+usage="To use run generate-video-side-by-side-wrapper 2025-XX-XX android-15-ptablet-talkback ./tmp"
+
+if [ ! -n "$TDATE" ]; then
+    echo "$usage";
+    echo "date missing"
+    exit 1;
+fi
+
+if [ ! -n "$TPMETADATA" ]; then
+    echo "$usage";
+    echo "metadata missing"
+    exit 1;
+fi
+
+if [ ! -n "$TRDIR" ]; then
+    echo "$usage";
+    echo "test restults dir missing"
+    exit 1;
+fi
+
+TSITELIST=$4
 if [ ! -n "$TSITELIST" ]; then
     echo "Sitelist argument not supplied, using default of ./sitelist.txt";
     TSITELIST="./sitelist.txt";
@@ -116,8 +138,9 @@ generate_platform_by_sitelist() {
 generate_platform_by_sitelist_control_points() {
     ISODATE="$1"
     PLATFORM="$2"
-    SITELIST="$3"
-    BROWSER="$4"
+    RDIR="$3"
+    SITELIST="$4"
+    BROWSER="$5"
 
    for i in `cat ${SITELIST}`
    do
@@ -126,10 +149,10 @@ generate_platform_by_sitelist_control_points() {
        ARTIFACT_BASE="$ISODATE-$TPLATFORM";
 
        # Generate thumbnails for firefox video.
-       BJSON=${BROWSER}/${URLM}-control-points.json
-       if [ -f "${BJSON}" ]; then
+       BJSON="${RDIR}/${BROWSER}/${URLM}-control-points.json"
+       CV="${ODIR}/${ARTIFACT_BASE}-${BROWSER}.mp4"
+       if [[ -f "${BJSON}" && -f "${CV}" ]]; then
 	   echo "starting	${i}: ${URLM} ${BROWSER}"
-	   CV="${ODIR}/${ARTIFACT_BASE}-${BROWSER}.mp4"
 	   $XTHUMBNAILS $CV $BJSON
        else
 	   echo "skipping	${i}: ${URLM} ${BROWSER}, not found"
@@ -138,8 +161,5 @@ generate_platform_by_sitelist_control_points() {
    done
 }
 
-generate_platform_by_sitelist_control_points "$TDATE" "$TPMETADATA" "$TSITELIST" \
-					     $FIREFOXDIR
-
-generate_platform_by_sitelist_control_points "$TDATE" "$TPMETADATA" "$TSITELIST" \
-					     $CHROMEDIR
+generate_platform_by_sitelist_control_points "$TDATE" "$TPMETADATA" "$TRDIR" "$TSITELIST" $FIREFOXDIR
+generate_platform_by_sitelist_control_points "$TDATE" "$TPMETADATA" "$TRDIR" "$TSITELIST" $CHROMEDIR
