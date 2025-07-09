@@ -76,8 +76,7 @@ copy_json_files_for_browser() {
 }
 
 
-# run for each browser, may need to edit name of browser directory.
-#copy_json_files_for_browser "fenix_nightly";
-#copy_json_files_for_browser "chrome";
-copy_json_files_for_browser "fenix_nightly_a11y";
-copy_json_files_for_browser "chrome_a11y";
+# run for
+copy_json_files_for_browser "fenix_nightly";
+#copy_json_files_for_browser "Chrome_release";
+copy_json_files_for_browser "chrome";
