@@ -8,6 +8,6 @@ git add *.json *.md *.js *.txt
 mv tmp/*.webp ../../filmstrip/
 
 # copy videos into midnight/videos/
-mv tmp/*.mp4 ../../videos/
+mv tmp/*side-by-side.mp4 ../../videos/
 
 echo "done positioning generated resources..."

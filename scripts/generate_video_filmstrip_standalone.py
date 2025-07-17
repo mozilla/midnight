@@ -129,11 +129,12 @@ def generate_video_filmstrip_control_points(ivideo, cpfilename):
                     timecodemin = int(timecoden/60)
                     timecodesec = timecoden - timecodemin;
                     thumbflag = "-ss 00:" + str(timecodemin) + ":" + str(timecodesec) + cspace + "-frames:v 1"
+                scaleflag = "-vf scale=iw/4:ih/4"
                 #timecodestr = f"{timecoden:.2f}"
                 #timecodestr = f"{timecodems:05}"
                 timecodestr = f"{timecodems:05d}"
                 ofname = f"{filenamebase}_{timecodestr}.{imgformat}"
-                fcommand="ffmpeg -i " + ifile + cspace + thumbflag + cspace + ofname
+                fcommand="ffmpeg -i " + ifile + cspace + thumbflag + cspace + scaleflag + cspace + ofname
                 #print(str(timecoden) + cspace + fcommand)
                 os.system(fcommand)
                 filmstrip_dict[timecodestr] = f"{ofnamebase}_{timecodestr}.{imgformat}"

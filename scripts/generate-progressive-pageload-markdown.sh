@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-PAGELOADGLYPH=$MOZPERFAX/bin/moz-perf-x-analyze-progressive-pageload.exe
+PAGELOADGLYPH=${MOZPERFAX}/bin/moz-perf-x-analyze-progressive-pageload.exe
 
 for FILE in `ls *aggregate.json`; do
     if [ -f "$FILE" ]; then
@@ -10,5 +10,6 @@ for FILE in `ls *aggregate.json`; do
     fi
 done
 
+mv 2025*.md ../../pages/
+#ls *.svg | grep "_x_" | xargs mv -t ../../resources/
 
-ls *.svg | grep -v "x_line_graph" | xargs mv -t ../../pages/

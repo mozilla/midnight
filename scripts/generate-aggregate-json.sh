@@ -1,7 +1,9 @@
 #!/usr/bin/env bash
 
 XURLMIN=$MOZPERFAX/bin/moz-perf-x-transform-url.exe
+XMINIJ=$MOZPERFAX/bin/moz-perf-x-minimize-aggregate.exe
 XAGGREGATE=../../scripts/generate_aggregate_json_by_date.py
+XMINI2HTML=../../scripts/transform_json_to_metric_html_table.py
 
 TDATE=$1
 
@@ -34,42 +36,56 @@ get_aggregate() {
 
 # 2
 generate_platform_by_sitelist() {
-    PLATFORM="$1"
-    ISODATE="$2"
+    ISODATE="$1"
+    PLATFORM="$2"
     SITELIST="$3"
 
+    MDOWNIDX=index-1-col-${PLATFORM}.md
+    echo "## Results" >> $MDOWNIDX
 
-   MDOWNIDX=index-1-col-${PLATFORM}.md
-   echo "## Results" >> $MDOWNIDX
+    JSIDX=index-${PLATFORM}.js
 
-   JSIDX=index-${PLATFORM}.js
+    for i in `cat ${SITELIST}`
+    do
+	URLM=`${XURLMIN} "$i"`
+	TPLATFORM="${PLATFORM}-${URLM}"
+	ARTIFACT_BASE="${ISODATE}-${TPLATFORM}";
 
-   for i in `cat ${SITELIST}`
-   do
-       URLM=`${XURLMIN} "$i"`
-       TPLATFORM="${PLATFORM}-${URLM}"
-       ARTIFACT_BASE="${ISODATE}-${TPLATFORM}";
+	echo "$i"
+	echo "$URLM"
 
-       echo "$i"
-       echo "$URLM"
+	FFMJ="${FIREFOXDIR}/${URLM}"
+	FFFJ="${ODIR}/${ARTIFACT_BASE}-firefox-filmstrip.json"
 
-       FFMJ="${FIREFOXDIR}/${URLM}"
-       FFFJ="${ODIR}/${ARTIFACT_BASE}-firefox-filmstrip.json"
+	CMJ="${CHROMEDIR}/${URLM}"
+	CFJ="${ODIR}/${ARTIFACT_BASE}-chrome-filmstrip.json"
 
-       CMJ="${CHROMEDIR}/${URLM}"
-       CFJ="${ODIR}/${ARTIFACT_BASE}-chrome-filmstrip.json"
+	$XAGGREGATE "$URLM" "$i" "$PLATFORM" "$ISODATE" "${ARTIFACT_BASE}-side-by-side.mp4" "$FFFJ" "$FFMJ" "$CFJ" "$CMJ"
 
-       $XAGGREGATE "$URLM" "$i" "$PLATFORM" "$ISODATE" "${ARTIFACT_BASE}-side-by-side.mp4" "$FFFJ" "$FFMJ" "$CFJ" "$CMJ"
+	# generate 1-col markdown index
+	echo "- [${URLM}](/pages/${ARTIFACT_BASE}.md)" >> $MDOWNIDX
 
-       # generate 1-col markdown index
-       echo "- [${URLM}](/pages/${ARTIFACT_BASE}-aggregate.svg)" >> $MDOWNIDX
+	# generate js index
+	#echo "\"${URLM}\", " >> $JSIDX
 
-       # generate js index
-       echo "\"${URLM}\", " >> $JSIDX
-   done
+	# generate mini metrics for html table in markdown.
+	AGGJNAME="${ISODATE}-${PLATFORM}-${URLM}-aggregate.json"
+	MINIJNAME="${ISODATE}-${PLATFORM}-${URLM}-mini-metrics.json"
+	MINIHNAME="${ISODATE}-${PLATFORM}-${URLM}-mini-metrics.html"
+	if [ -f "${AGGJNAME}" ]; then
+	    $XMINIJ ${AGGJNAME}
+	else
+	    echo "aggregate jason file missing: ${AGGJNAME}"
+	fi
+	if [ -f "${MINIJNAME}" ]; then
+	    $XMINI2HTML $MINIJNAME $MINIHNAME
+	else
+	    echo "mini-metrics jason file missing: ${MINIJNAME}"
+	fi
+    done
 }
 
-generate_platform_by_sitelist "$TPMETADATA" "$TDATE" "./sitelist.txt"
+generate_platform_by_sitelist "$TDATE" "$TPMETADATA"  "./sitelist.txt"
 
 # 3
 generate_data_json() {
@@ -99,10 +115,10 @@ generate_data_json
 # 4
 # NB: FPO only, does not check to make sure files exist before linking to them.
 generate_2_col_index() {
-    PLATFORM1="$1"
-    ISODATE1="$2"
-    PLATFORM2="$3"
-    ISODATE2="$4"
+    ISODATE1="$1"
+    PLATFORM1="$2"
+    ISODATE2="$3"
+    PLATFORM2="$4"
     SITELIST="$5"
 
 
@@ -143,4 +159,4 @@ generate_2_col_index() {
 
 #TPMETADATA_A=$TPMETADATA1
 #TPMETADATA_B=$TPMETADATA2
-#generate_2_col_index "$TPMETADATA_A" "2025-02-09" "$TPMETADATA_B" "2025-05-27" "./sitelist.txt"
+#generate_2_col_index "2025-02-09" "$TPMETADATA_A" "2025-05-27" "$TPMETADATA_B" "./sitelist.txt"
