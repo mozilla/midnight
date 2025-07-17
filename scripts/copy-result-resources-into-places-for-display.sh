@@ -2,7 +2,7 @@
 
 # cd midnight/results/2025-06-18/
 # aka inside the specific results directory, after outputs have been generated.
-git add *.json *.md *.js *.txt
+git add *.json *.md *.txt
 
 # copy images into midnight/filmstrip/
 mv tmp/*.webp ../../filmstrip/
