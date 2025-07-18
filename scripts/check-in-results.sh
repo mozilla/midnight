@@ -1,1 +1,1 @@
-git add *.txt *.js *.json *.md
+git add *.txt *.json *.md
