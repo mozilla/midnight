@@ -121,23 +121,30 @@ def generate_video_filmstrip_control_points(ivideo, cpfilename):
         with open(cpfilename, 'r') as f:
             for line in f:
                 timecodems = int(line.strip());
-                print(timecodems)
-                timecoden = float(timecodems / 1000);
-                if timecoden < 60:
-                    thumbflag = "-ss 00:00:" + str(timecoden) + cspace + "-frames:v 1"
+                if timecodems > durms:
+                    msg = f"requested time ({timecodems}ms) "
+                    msg += f"is longer than video file length {durms}ms"
+                    print(msg)
                 else:
-                    timecodemin = int(timecoden/60)
-                    timecodesec = timecoden - timecodemin;
-                    thumbflag = "-ss 00:" + str(timecodemin) + ":" + str(timecodesec) + cspace + "-frames:v 1"
-                scaleflag = "-vf scale=iw/4:ih/4"
-                #timecodestr = f"{timecoden:.2f}"
-                #timecodestr = f"{timecodems:05}"
-                timecodestr = f"{timecodems:05d}"
-                ofname = f"{filenamebase}_{timecodestr}.{imgformat}"
-                fcommand="ffmpeg -i " + ifile + cspace + thumbflag + cspace + scaleflag + cspace + ofname
-                #print(str(timecoden) + cspace + fcommand)
-                os.system(fcommand)
-                filmstrip_dict[timecodestr] = f"{ofnamebase}_{timecodestr}.{imgformat}"
+                    timecodes = float(timecodems / 1000);
+                    #timecodestr = f"{timecoden:.2f}"
+                    #timecodestr = f"{timecodems:05}"
+                    #timecodestr = f"-ss {timecodes:05d}"
+                    timecodestr = f"-ss {timecodes}"
+                    frameflag = "-frames:v 1"
+                    scaleflag = "-vf scale=iw/4:ih/4"
+                    ofname = f"{filenamebase}_{timecodems}.{imgformat}"
+
+                    # seek first makes ffmpeg faster, supposedly
+                    fcommand="ffmpeg " + timecodestr + cspace + "-i " + ivideo + cspace
+                    fcommand += frameflag + cspace + scaleflag + cspace + ofname
+                    result = os.system(fcommand)
+                    print("\n")
+                    print(f"at second: {str(timecodes)}\n")
+                    print(f"command: {fcommand}\n")
+                    print(f"returns: {result}\n")
+                    print("\n")
+                    filmstrip_dict[timecodestr] = f"{ofnamebase}_{timecodestr}.{imgformat}"
 
     except FileNotFoundError:
         print(f"Error: The file '{cpfilename}' was not found.", file=sys.stderr)
