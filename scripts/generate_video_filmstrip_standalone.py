@@ -133,7 +133,7 @@ def generate_video_filmstrip_control_points(ivideo, cpfilename):
                     timecodestr = f"-ss {timecodes}"
                     frameflag = "-frames:v 1"
                     scaleflag = "-vf scale=iw/4:ih/4"
-                    ofname = f"{filenamebase}_{timecodems}.{imgformat}"
+                    ofname = f"{filenamebase}_{timecodems:05d}.{imgformat}"
 
                     # seek first makes ffmpeg faster, supposedly
                     fcommand="ffmpeg " + timecodestr + cspace + "-i " + ivideo + cspace
@@ -144,7 +144,7 @@ def generate_video_filmstrip_control_points(ivideo, cpfilename):
                     print(f"command: {fcommand}\n")
                     print(f"returns: {result}\n")
                     print("\n")
-                    filmstrip_dict[timecodestr] = f"{ofnamebase}_{timecodestr}.{imgformat}"
+                    filmstrip_dict[timecodems] = f"{ofnamebase}_{timecodems:05d}.{imgformat}"
 
     except FileNotFoundError:
         print(f"Error: The file '{cpfilename}' was not found.", file=sys.stderr)
