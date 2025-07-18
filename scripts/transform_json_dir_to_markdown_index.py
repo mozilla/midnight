@@ -14,33 +14,69 @@ sitelistf = sys.argv[1];
 aggjdir = sys.argv[2];
 
 
-def convert_datframe_to_html_table(df, outputf):
+def replace_between(original_str, start_marker, end_marker, replacement_str):
+    start_index = original_str.find(start_marker)
+    if start_index == -1:
+        return original_str
+
+    end_index = original_str.find(end_marker, start_index)
+    if end_index == -1:
+        return original_str
+
+    part_before = original_str[:start_index]
+    part_after = original_str[end_index + len(end_marker):]
+    return part_before + replacement_str + part_after
+
+
+def make_html_table_head(date):
+    sthead = f"""
+<thead>
+  <tr>
+    <th rowspan="2">test url</th>
+    <th colspan="4">{date}</th>
+  </tr>
+  <tr>
+    <th>phone</th>
+    <th>phone-talkback</th>
+    <th>tablet</th>
+    <th>tablet-talkback</th>
+  </tr>
+</thead>
+"""
+    return sthead
+
+
+def convert_dataframe_to_html_table(df, outputf, date):
     try:
-        html_table_string = df.to_html(
-            index=False,               # Do not include the DataFrame index as a column
-            na_rep='nan',              # Represent NaN values as 'N/A'
-            float_format='%.1f'        # Format float numbers to one decimal places
-        )
+        # NB escape=False required if html is embedded
+        html_table_string = df.to_html(escape=False, index=False, na_rep='nan', float_format='%.1f')
 
         # Create a complete HTML document with the table
         # We'll use a simple HTML template with basic styling for a clean look
-        html_content = f"""
-        <html lang="en">
-          <head>
-            <meta charset="UTF-8">
-            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <title>Metics Table</title>
-          </head>
-          <body>
-            <div class="table-container">
-            {html_table_string}
-            </div>
-          </body>
-        </html>
+        html_content_base = f"""
+<html lang="en">
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Results Index</title>
+</head>
+<body>
+  <div class="table-container">
+    {html_table_string}
+  </div>
+</body>
+</html>
         """
+
+        # Customize table headers for this data.
+        startw = "<thead>"
+        endw = "</thead>"
+        customthead = make_html_table_head(date)
+        html_content = replace_between(html_content_base, startw, endw, customthead)
 
         # Write the complete HTML content to the specified output file
         with open(outputf, 'w', encoding='utf-8') as f:
+            f.write("## test result index \n")
+            f.write("\n")
             f.write(html_content)
 
     except FileNotFoundError:
@@ -57,8 +93,8 @@ def convert_datframe_to_html_table(df, outputf):
         sys.exit(1)
 
 
+# read sitelist file
 def deserialize_sitelist_file(sitelist):
-    # read sitelist file
     if os.path.exists(sitelistf):
         try:
             with open(sitelistf, 'r') as f:
@@ -103,6 +139,52 @@ def deserialize_aggregate_json_file(jsonf):
         sys.exit(2)
 
 
+def shorten_platform(platform):
+    short = None
+    if platform == "android-15-ptablet":
+        short = "tablet"
+    if platform == "android-15-ptablet-talkback":
+        short = "tablet-tb"
+    if platform == "android-15-p8":
+        short = "phone"
+    if platform == "android-15-p8-talkback":
+        short = "phone-tb"
+    return short
+
+
+# List of fails per date/platform/site/browser
+chromefail = []
+firefoxfail = []
+def make_metadata_string(date, platform, miniurl):
+    meta = f"{date}-{platform}-{miniurl}"
+    return meta
+
+
+# n == index, starts at 0
+def create_platform_link(date, platforms, miniurl, n):
+    plink = ""
+    if len(platforms) > n:
+        platf = platforms[n];
+        metadata = make_metadata_string(date, platf, miniurl)
+
+        # from html linking to markdown, link to the to-be-parsed html not md
+        #page = f"/pages/{metadata}.md"
+        page = f"pages/{metadata}.html"
+        plink = f"""<a href="{page}">Y</a>"""
+
+        # overwrite if error
+        chromep = metadata in chromefail
+        firefoxp = metadata in firefoxfail
+        if chromep and firefoxp:
+            plink = "❌ chrome, firefox"
+        else:
+            if chromep:
+                plink = "❌ chrome"
+            if firefoxp:
+                plink = "❌ firefox"
+    return plink
+
+
 def convert_aggregate_json_to_markdown_index(sitelist, jdir):
     """
     Reads data files in directory and orders into a sitelist json file for conversion to
@@ -120,38 +202,38 @@ def convert_aggregate_json_to_markdown_index(sitelist, jdir):
     aggregate_files = list(pdir.glob('*-aggregate.json'))
 
     # Order index in same was as the (minimized-url) sorted sitelist.
+    date = None
     aggindex = []
     sites = deserialize_sitelist_file(sitelist)
     for site in sites:
         miniurl = None
-        date = None
         matchplatform = []
         for file_path in aggregate_files:
             data = deserialize_aggregate_json_file(file_path)
             if data.get('url') == site:
+                date = data.get('date')
                 platform = data.get('platform')
                 miniurl = data.get('test')
-                date = data.get('date')
+                if not 'chrome' in data:
+                    chromefail.append(make_metadata_string(date, platform, miniurl))
+                if not 'firefox' in data:
+                    firefoxfail.append(make_metadata_string(date, platform, miniurl))
                 matchplatform.append(platform)
         if matchplatform:
             matchplatform.sort()
             print(f"{miniurl} found results for {matchplatform}")
-
-            #miniurllink = f"[{miniurl}]({site})"
-            miniurllink = f'<a href="{site}">{miniurl}</a>'
+            miniurllink = f"""<a href="{site}">{miniurl}</a>"""
             result_object = {
                 'site_url': miniurllink,
-                'date': date,
-                'platform1': matchplatform[0],
-                'platform2': matchplatform[1] if len(matchplatform) > 1 else "",
-                'platform3': matchplatform[2] if len(matchplatform) > 2 else "",
-                'platform4': matchplatform[3] if len(matchplatform) > 3 else ""
+                'platform1': create_platform_link(date, matchplatform, miniurl, 0),
+                'platform2': create_platform_link(date, matchplatform, miniurl, 1),
+                'platform3': create_platform_link(date, matchplatform, miniurl, 2),
+                'platform4': create_platform_link(date, matchplatform, miniurl, 3)
             }
             aggindex.append(result_object)
         else:
             result_object = {
                 'site_url': miniurllink,
-                'date': "",
                 'platform1': "",
                 'platform2': "",
                 'platform3': "",
@@ -161,8 +243,9 @@ def convert_aggregate_json_to_markdown_index(sitelist, jdir):
 
     # Now, make aggindex into a data frame.
     df = pd.DataFrame(aggindex)
-    convert_datframe_to_html_table(df, "multi-test-index-by-date.html")
+    ofile = f"{date}-multi-test-index.md"
+    convert_dataframe_to_html_table(df, ofile, date)
 
 
-# do the thing
+# do the thing for one date
 convert_aggregate_json_to_markdown_index(sitelistf, aggjdir)
