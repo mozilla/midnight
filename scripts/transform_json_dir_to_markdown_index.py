@@ -67,17 +67,25 @@ def convert_dataframe_to_html_table(df, outputf, date):
 </html>
         """
 
-        # Customize table headers for this data.
+        # Customize table elements for this data.
+
+        # tables
+        startt = "<table border"
+        endt = ">"
+        customtable = f"""<table>"""
+        html_content1 = replace_between(html_content_base, startt, endt, customtable)
+
+        # theads
         startw = "<thead>"
         endw = "</thead>"
         customthead = make_html_table_head(date)
-        html_content = replace_between(html_content_base, startw, endw, customthead)
+        html_content2 = replace_between(html_content1, startw, endw, customthead)
 
         # Write the complete HTML content to the specified output file
         with open(outputf, 'w', encoding='utf-8') as f:
             f.write("## test result index \n")
             f.write("\n")
-            f.write(html_content)
+            f.write(html_content2)
 
     except FileNotFoundError:
         print(f"Error: One of the files was not found. Please check paths.", file=sys.stderr)

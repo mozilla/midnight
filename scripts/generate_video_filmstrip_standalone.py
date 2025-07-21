@@ -144,7 +144,8 @@ def generate_video_filmstrip_control_points(ivideo, cpfilename):
                     print(f"command: {fcommand}\n")
                     print(f"returns: {result}\n")
                     print("\n")
-                    filmstrip_dict[timecodems] = f"{ofnamebase}_{timecodems:05d}.{imgformat}"
+                    if not result:
+                        filmstrip_dict[timecodems] = f"{ofnamebase}_{timecodems:05d}.{imgformat}"
 
     except FileNotFoundError:
         print(f"Error: The file '{cpfilename}' was not found.", file=sys.stderr)

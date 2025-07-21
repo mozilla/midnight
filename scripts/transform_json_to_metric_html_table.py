@@ -12,6 +12,19 @@ import os
 infile = sys.argv[1];
 outfile = sys.argv[2];
 
+def replace_between(original_str, start_marker, end_marker, replacement_str):
+    start_index = original_str.find(start_marker)
+    if start_index == -1:
+        return original_str
+
+    end_index = original_str.find(end_marker, start_index)
+    if end_index == -1:
+        return original_str
+
+    part_before = original_str[:start_index]
+    part_after = original_str[end_index + len(end_marker):]
+    return part_before + replacement_str + part_after
+
 
 def convert_json_to_html_table(inputf, outputf):
     """
@@ -51,18 +64,12 @@ def convert_json_to_html_table(inputf, outputf):
         # 2. Convert the JSON data into a Pandas DataFrame
         df = pd.DataFrame(data)
 
-        # 3. Convert the DataFrame to an HTML table string
-        # Added Tailwind CSS classes for better default styling if included in a web project
-        # Using inline styling here for a self-contained HTML file.
-        html_table_string = df.to_html(
-            index=False,               # Do not include the DataFrame index as a column
-            na_rep='nan',              # Represent NaN values as 'N/A'
-            float_format='%.1f'        # Format float numbers to one decimal places
-        )
+        # NB escape=False required if html is embedded
+        html_table_string = df.to_html(escape=False, index=False, na_rep='nan', float_format='%.1f')
 
         # 4. Create a complete HTML document with the table
         # We'll use a simple HTML template with basic styling for a clean look
-        html_content = f"""
+        html_content_base = f"""
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -76,6 +83,12 @@ def convert_json_to_html_table(inputf, outputf):
 </body>
 </html>
         """
+
+        # tables
+        startt = "<table border"
+        endt = ">"
+        customtable = f"""<table>"""
+        html_content = replace_between(html_content_base, startt, endt, customtable)
 
         # 5. Write the complete HTML content to the specified output file
         with open(outputf, 'w', encoding='utf-8') as f:
